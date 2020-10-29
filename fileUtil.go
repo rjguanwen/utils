@@ -6,6 +6,8 @@ package utils
 
 import (
 	"bufio"
+	"crypto/md5"
+	"encoding/hex"
 	log "github.com/cihub/seelog"
 	"io"
 	"io/ioutil"
@@ -127,4 +129,29 @@ func ReadLastLineFromFile(filePath string, buffSize int, exceptEmpty bool) (last
 	}
 	//fmt.Println("---==>>>", strings.TrimSpace(string(line)))
 	return strings.TrimSpace(string(line)), err
+}
+
+// 获取文件 MD5 码
+func GetFileMD5(path string) (MD5 string, err error) {
+	f, err := os.Open(path)
+	if err != nil {
+		log.Error("open file error", path)
+		return
+	}
+	defer func() {
+		err = f.Close()
+		if err != nil {
+			log.Error("file close error")
+			return
+		}
+	}()
+
+	md5Hash := md5.New()
+	size, err := io.Copy(md5Hash, f)
+	if err != nil {
+		log.Error("io copy error", size)
+		return
+	}
+	MD5 = hex.EncodeToString(md5Hash.Sum(nil))
+	return
 }

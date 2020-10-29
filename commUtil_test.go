@@ -44,3 +44,7 @@ func ModifyTestSlice(a []string, b []int) {
 	b = append(b, 1)
 	b = append(b, 2)
 }
+
+func TestGetCurrentMonth(t *testing.T) {
+	fmt.Println(GetCurrentMonth())
+}
