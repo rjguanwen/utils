@@ -13,6 +13,8 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -154,4 +156,25 @@ func GetFileMD5(path string) (MD5 string, err error) {
 	}
 	MD5 = hex.EncodeToString(md5Hash.Sum(nil))
 	return
+}
+
+
+// 判断文件或文件夹是否为隐藏文件
+func CheckIsHiddenByPath(filePath string) bool{
+	fi, err := os.Stat(filePath)
+	if err != nil {
+		log.Error("读取文件信息报错：", err)
+	}
+	return CheckIsHidden(fi)
+}
+
+// 判断文件或文件夹是否为隐藏文件
+func CheckIsHidden(file os.FileInfo) bool{
+	//"通过反射来获取Win32FileAttributeData的FileAttributes
+	fa := reflect.ValueOf(file.Sys()).Elem().FieldByName("FileAttributes").Uint()
+	bytefa :=[]byte(strconv.FormatUint(fa,2))
+	if bytefa[len(bytefa)-2]=='1'{
+		return true
+	}
+	return false
 }

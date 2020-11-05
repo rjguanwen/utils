@@ -6,6 +6,8 @@ package utils
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"testing"
 	"time"
 )
@@ -27,4 +29,19 @@ func TestGetFileMD5(t *testing.T) {
 	timeUse := time.Since(begin)
 	fmt.Println("文件 MD5 码：", fileMD5)
 	fmt.Println("共用时：", timeUse)
+}
+
+func TestCheckIsHidden(t *testing.T) {
+	beginTime := time.Now()
+	//filePath := "c:/tmp/彩色圆环图.7z"
+	//filePath := "c:/tmp/flexganttfx-11.8.1-bin.zip"
+	filePath := "c:/tmp/ss"
+	fi, err := os.Stat(filePath)
+	if err != nil {
+		log.Fatal("读出文件信息报错：", err)
+	}
+	isHidden := CheckIsHidden(fi)
+	timeUse := time.Since(beginTime)
+	fmt.Println("文件为隐藏文件：", isHidden)
+	fmt.Println("方法用时：", timeUse)
 }
