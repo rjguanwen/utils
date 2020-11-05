@@ -31,6 +31,17 @@ func TestGetFileMD5(t *testing.T) {
 	fmt.Println("共用时：", timeUse)
 }
 
+func TestCheckIsHiddenByPath(t *testing.T) {
+	beginTime := time.Now()
+	//filePath := "c:/tmp/彩色圆环图.7z"
+	//filePath := "c:/tmp/flexganttfx-11.8.1-bin.zip"
+	filePath := "c:/tmp/ss"
+	isHidden := CheckIsHiddenByPath(filePath)
+	timeUse := time.Since(beginTime)
+	fmt.Println("文件为隐藏文件：", isHidden)
+	fmt.Println("方法用时：", timeUse)
+}
+
 func TestCheckIsHidden(t *testing.T) {
 	beginTime := time.Now()
 	//filePath := "c:/tmp/彩色圆环图.7z"
